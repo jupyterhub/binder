@@ -13,10 +13,29 @@ Binder Documentation
    :target: https://discourse.jupyter.org
 
 
-**Binder** allows you to create custom computing environments that can be shared
-and used by many remote users. It is powered by `BinderHub <https://github.com/jupyterhub/binderhub>`_,
-which is an open-source tool that deploys the Binder service in the cloud.
-One-such deployment lives here, at `mybinder.org <https://mybinder.org>`_, and is free to use.
+**mybinder.org** ...
+
+    create custom computing environments that can be shared
+    and used by many remote users. 
+
+        Open any public git repository in an executable environment from your browser
+
+        create sharable, interactive, reproducible environments from your public git repository.
+
+        gives you one-click workstations in the cloud
+
+        with one click, launch a workstation in the cloud
+
+        lets you launch customizable environments to execute your code
+
+        is a free notebook environment that you can customize, share, and run entirely in the cloud
+
+
+
+
+
+
+
 For more information about the mybinder.org deployment and the team that runs it, see
 :ref:`about`.
 
@@ -126,3 +145,11 @@ Here is a citation that you can use:
    Jupyter et al., "Binder 2.0 - Reproducible, Interactive, Sharable
    Environments for Science at Scale." Proceedings of the 17th Python
    in Science Conference. 2018. 10.25080/Majora-4af1f417-011
+
+
+TODO: Extra content
+======
+
+It is powered by `BinderHub <https://github.com/jupyterhub/binderhub>`_,
+which is an open-source tool that deploys the Binder service in the cloud.
+One-such deployment lives here, at `mybinder.org <https://mybinder.org>`_, and is free to use.
