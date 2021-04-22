@@ -164,17 +164,23 @@ For a Dockerfile to work on Binder, it must meet the following requirements:
 
    .. code-block:: sh
 
-      docker run <image> jupyter notebook <arguments from the mybinder launcher>
+      docker run --security-opt=no-new-privileges:true <image> jupyter-notebook --ip=0.0.0.0 --port=8888 <arguments from the mybinder launcher>
 
-   where `<arguments ...>` includes important information automatically set by the binder
-   environment, such as the port and token.
+   where `<arguments ...>` includes details of little relevance for local debugging such as:
+   
+   .. code-block:: sh
+   
+      --NotebookApp.base_url=/user/some-partially-random-path/
+      --NotebookApp.token=some-random-token
+      --NotebookApp.trust_xheaders=True
+      --NotebookApp.allow_origin=*
+      --NotebookApp.allow_origin_pat=.*
 
    If your Dockerfile sets or inherits the Docker `ENTRYPOINT` instruction, the program
    specified as the `ENTRYPOINT` *must* `exec` the arguments passed by docker. Inherited
    Dockerfiles may unset the entrypoint with `ENTRYPOINT []`.
 
    For more information, and a shell wrapper example, please see the `Dockerfile best practices: ENTRYPOINT  <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#entrypoint>`_ documentation.
-
 
 Ensuring reproducibility with Dockerfiles
 -----------------------------------------
