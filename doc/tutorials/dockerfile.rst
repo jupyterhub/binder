@@ -82,12 +82,13 @@ Preparing your Dockerfile
 For a Dockerfile to work on Binder, it must meet the following requirements:
 
 1. It must install a recent version of Jupyter Notebook.
+
    This should be installed via ``pip`` with the `notebook` package.
    So in your dockerfile, you should have a command such as:
 
    .. code-block:: Dockerfile
 
-       RUN pip install --no-cache-dir notebook==5.*
+      RUN pip install --no-cache-dir notebook
 
 2. It must explicitly specify a tag in the image you source.
 
@@ -117,6 +118,7 @@ For a Dockerfile to work on Binder, it must meet the following requirements:
           FROM jupyter/scipy-notebook:latest
 
 3. It must set up a user whose uid is `1000`.
+
    It is bad practice to run processes in containers as root, and on binder
    we do not allow root container processes. If you are using an ubuntu or
    debian based container image, you can create a user easily with the following
@@ -148,11 +150,11 @@ For a Dockerfile to work on Binder, it must meet the following requirements:
 
    .. code-block:: Dockerfile
 
-       # Make sure the contents of our repo are in ${HOME}
-       COPY . ${HOME}
-       USER root
-       RUN chown -R ${NB_UID} ${HOME}
-       USER ${NB_USER}
+      # Make sure the contents of our repo are in ${HOME}
+      COPY . ${HOME}
+      USER root
+      RUN chown -R ${NB_UID} ${HOME}
+      USER ${NB_USER}
 
    This chown is required because Docker will be default
    set the owner to ``root``, which would prevent users from editing files. Note that the repository 
@@ -160,7 +162,7 @@ For a Dockerfile to work on Binder, it must meet the following requirements:
    ``Dockerfile``, it does not invalidate the build cache of mybinder. Thus, if available, the the cached
    repository will be used even after changes to the repository. 
 
-5. It must accept command arguments. The Dockerfile will effectively be launched as:
+5. It must accept command arguments.
 
    .. code-block:: sh
 
@@ -175,6 +177,47 @@ For a Dockerfile to work on Binder, it must meet the following requirements:
 
    For more information, and a shell wrapper example, please see the `Dockerfile best practices: ENTRYPOINT  <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#entrypoint>`_ documentation.
 
+You can build and test your image locally like this.
+
+1. Try building your image.
+
+   .. code-block:: sh
+
+      docker build -t my-image .
+
+2. Try starting a container from the image.
+
+   .. code-block:: sh
+
+      docker run -it --rm -p 8888:8888 my-image jupyter-notebook --ip=0.0.0.0 --port=8888
+
+3. Try starting a container from the image with the additional security requirements.
+
+   .. code-block:: sh
+
+      docker run -it --rm -p 8888:8888 --security-opt=no-new-privileges:true my-image jupyter-notebook --ip=0.0.0.0 --port=8888
+
+4. Inspect the container from terminal.
+
+   Verify your user has an id of `1000` and ownership of files in the home folder.
+
+   .. code-block:: sh
+
+      docker run -it --rm my-image bash
+
+   .. code-block:: sh
+
+      # what username do i have?
+      whoami
+
+      # what user id do i have?
+      id -u
+
+      # what is the current working directory?
+      pwd
+
+      # who is the owner of the files in the users home directory?
+      ls -alh ~
 
 Ensuring reproducibility with Dockerfiles
 -----------------------------------------
